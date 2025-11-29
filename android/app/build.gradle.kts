@@ -6,6 +6,10 @@ plugins {
 }
 
 android {
+    ndkVersion = "27.0.12077973"
+}
+
+android {
     namespace = "com.example.cp_kaichecksheet"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion

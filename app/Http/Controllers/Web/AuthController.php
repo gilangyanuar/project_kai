@@ -28,7 +28,7 @@ class AuthController extends Controller
             return redirect('/dashboard');
         }
 
-        return back()->withErrors(['auth' => 'NIPP atau Password Anda tidak valid!']);
+        return back()->withError('NIPP atau Password Anda tidak valid!');
     }
 
     public function logout(Request $request){

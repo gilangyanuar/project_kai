@@ -8,13 +8,29 @@
         <section class="min-vh-100 d-flex align-items-center section-image overlay-soft-dark">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-12 d-flex align-items-center justify-content-center">
+                    <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+
+                        @if (session('error'))
+                        <div class="alert alert-danger mb-4 w-100 fmxw-500">
+                            <div class="d-flex align-items-center">
+                                <div class="me-2">
+                                    <i class="fas fa-exclamation fa-2x"></i>
+                                </div>
+                                <div>
+                                   <p class="fw-bolder mb-0">Terjadi Kesalahan!</p>
+                                   {{ session('error') }}
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+
                         <div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
                             <div class="text-center text-md-center mb-5 mt-md-0">
                                 <h1 class="mb-0 h2">KAI</h1>
                                 <p class="text-muted">Masuk untuk melanjutkan</p>
                             </div>
-                            <form action="#" method="post">
+                            <form action="{{ route('login.post') }}" method="post">
+                                @csrf
                                 <div class="form-group mb-4">
                                     <label for="nipp">Nomor Identitas Pegawai PT. (NIPP)</label>
                                     <div class="input-group">

@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="id" >
     <head>
-        <title>Masuk - Project KAI</title>
+        <title>Masuk - {{ getenv('APP_NAME') }}</title>
         @include('components.head_script')
     </head>
     <body>
-        <section class="min-vh-100 d-flex align-items-center section-image overlay-soft-dark">
-            <div class="container">
+        <section class="min-vh-100 d-flex align-items-center section-image overlay-soft-dark" data-background="https://www.rubis.id/wp-content/uploads/2022/10/45df834a73a365fe1027edfa5b62de51-1.jpeg">
+            <div class="container" style="z-index: 2;">
                 <div class="row justify-content-center">
                     <div class="col-12 d-flex flex-column align-items-center justify-content-center">
 
-                        @if (session('error'))
+                        @if ($errors->any())
                         <div class="alert alert-danger mb-4 w-100 fmxw-500">
                             <div class="d-flex align-items-center">
                                 <div class="me-2">
@@ -18,7 +18,11 @@
                                 </div>
                                 <div>
                                    <p class="fw-bolder mb-0">Terjadi Kesalahan!</p>
-                                   {{ session('error') }}
+                                   <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -26,7 +30,8 @@
 
                         <div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
                             <div class="text-center text-md-center mb-5 mt-md-0">
-                                <h1 class="mb-0 h2">KAI</h1>
+                                <img src="{{ asset('images/favicons/icon-192.png') }}" alt="" class="w-25">
+                                <h1 class="mb-0 mt-3 h3">KAI Facility Hub</h1>
                                 <p class="text-muted">Masuk untuk melanjutkan</p>
                             </div>
                             <form action="{{ route('login.post') }}" method="post">
@@ -37,7 +42,7 @@
                                         <span class="input-group-text" id="basic-addon1">
                                             <span class="fas fa-id-card"></span>
                                         </span>
-                                        <input type="text" class="form-control" placeholder="123456" id="nipp" name="nipp" required="">
+                                        <input type="text" class="form-control" placeholder="123456" id="nipp" name="nipp" required value="{{ old('nipp', '') }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -52,7 +57,7 @@
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mb-4">
                                         <div class="form-check mb-0">
-                                            <input class="form-check-input" type="checkbox" value="" id="remember">
+                                            <input class="form-check-input" type="checkbox" value="" id="remember" name="remember">
                                             <label class="form-check-label mb-0" for="remember">Ingat saya</label>
                                         </div>
                                         <div>

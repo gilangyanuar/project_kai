@@ -14,21 +14,16 @@ class AuthController extends Controller
 
     public function login(Request $request) {
         $credentials = $request->validate([
-            'nipp' => 'required|string|min:6',
+            'nipp' => 'required|string|min:4',
             'password' => 'required'
         ]);
 
         // Do authorization
-        if(
-            Auth::attempt([
-                'nipp' => $credentials['nipp'],
-                'password_hash' => $credentials['password']
-            ])
-        ){
+        if(Auth::attempt($credentials)){
             return redirect('/dashboard');
         }
 
-        return back()->withError('NIPP atau Password Anda tidak valid!');
+        return back()->withErrors(['NIPP atau Password Anda tidak valid!'])->withInput($credentials);
     }
 
     public function logout(Request $request){

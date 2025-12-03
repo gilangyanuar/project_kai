@@ -14,6 +14,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $primaryKey = 'user_id';
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -52,4 +53,9 @@ class User extends Authenticatable
     public function role(){
         return $this->hasOne(Roles::class, 'role_id', 'role_id');
     }
+
+    public function getAuthPasswordName()
+        {
+            return 'password_hash';
+        }
 }

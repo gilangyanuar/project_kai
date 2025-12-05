@@ -5,7 +5,7 @@
         @include('components.head_script')
     </head>
     <body>
-        <section class="min-vh-100 d-flex align-items-center section-image overlay-soft-dark" data-background="https://www.rubis.id/wp-content/uploads/2022/10/45df834a73a365fe1027edfa5b62de51-1.jpeg">
+        <section class="min-vh-100 d-flex align-items-center section-image overlay-soft-dark" style="background-image: url('https://www.rubis.id/wp-content/uploads/2022/10/45df834a73a365fe1027edfa5b62de51-1.jpeg');">
             <div class="container" style="z-index: 2;">
                 <div class="row justify-content-center">
                     <div class="col-12 d-flex flex-column align-items-center justify-content-center">

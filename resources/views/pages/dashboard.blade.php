@@ -41,7 +41,22 @@
                     </div>
                 </div>
             </aside>
-            <main id="page-content-wrapper"></main>
+            <main id="page-content-wrapper">
+                <nav class="navbar navbar-expand-lg navbar-light border-bottom">
+                    <div class="container-fluid justify-content-start">
+                        <button class="btn btn-icon-only w-auto me-2" id="sidebarToggle">
+                            <span class="material-symbols-outlined">menu</span>
+                        </button>
+                        <a href="" class="me-2">
+                            <img src="{{ asset('images/favicons/icon-192.png') }}" class="app-logo" alt="App Logo">
+                        </a>
+                        <div class="ms-auto">
+
+                            <a href="">sldkfjlsdk</a>
+                        </div>
+                    </div>
+                </nav>
+            </main>
         </div>
     </body>
     @include('components.foot_script')

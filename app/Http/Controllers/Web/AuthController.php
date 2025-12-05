@@ -20,6 +20,10 @@ class AuthController extends Controller
 
         // Do authorization
         if(Auth::attempt($credentials)){
+            if(Auth::user()->role_id != 1){
+                Auth::logout();
+                return back()->withErrors(['Anda bukan Administrator! Halaman ini khusus untuk Administrator.'])->withInput($credentials);
+            }
             return redirect('/dashboard');
         }
 

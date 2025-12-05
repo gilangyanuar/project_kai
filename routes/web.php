@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\DashboardController;
 use Illuminate\Support\Facades\Auth;
 
 Route::redirect('/', '/login');
@@ -18,5 +19,5 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function() {
-    Route::get('/dashboard', function(){ return view('pages.dashboard'); });
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });

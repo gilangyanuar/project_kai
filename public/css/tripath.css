@@ -4,7 +4,11 @@
 
 #sidebar-wrapper {
   min-height: 100vh;
-  margin-left: -17rem;
+  margin-left: -18rem;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1055;
   transition: margin 0.25s ease-out;
 }
 
@@ -19,6 +23,7 @@
 
 #page-content-wrapper {
   min-width: 100vw;
+  transition: all 0.25s ease-out;
 }
 
 body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
@@ -55,16 +60,30 @@ nav img.app-logo {
     background-color: rgb(29 88 165 / 15%);
   }
 
-@media (min-width: 768px) {
+.organic-radius {
+    border-radius: 63% 37% 30% 70% / 50% 45% 55% 50%;
+}
+
+.card-subtitle {
+  opacity: .75;
+  font-size: .875em;
+}
+
+@media (min-width: 992px) {
   #sidebar-wrapper {
     margin-left: 0;
   }
   #page-content-wrapper {
     min-width: 0;
-    width: 100%;
+    width: calc(100% - 18rem);
+    margin-left: 18rem;
   }
   body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
-    margin-left: -15rem;
+    margin-left: -18rem;
+  }
+  body.sb-sidenav-toggled #wrapper #page-content-wrapper {
+    margin-left: 0;
+    width: 100%;
   }
 }
 

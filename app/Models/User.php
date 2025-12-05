@@ -3,9 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -28,6 +31,8 @@ class User extends Authenticatable
         'role_id',
         'is_active'
     ];
+
+    protected $appends = ['first_name'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -54,8 +59,15 @@ class User extends Authenticatable
         return $this->hasOne(Roles::class, 'role_id', 'role_id');
     }
 
-    public function getAuthPasswordName()
-        {
-            return 'password_hash';
+    public function getAuthPasswordName(){
+        return 'password_hash';
+    }
+
+    protected function getFirstNameAttribute(){
+        if(Str::contains($this->name, ' ')){
+            return explode(' ', $this->name)[0];
+        } else {
+            return $this->name;
         }
+    }
 }

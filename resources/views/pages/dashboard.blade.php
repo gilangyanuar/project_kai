@@ -13,7 +13,7 @@
                             <img src="{{ asset('images/user-default.jpg') }}" class="img-avatar rounded-circle border-white" alt="User Picture">
                         </div>
                         <div class="d-flex flex-column">
-                            <span class="h6 my-1 my-lg-2 me-3 me-lg-0">Hi, Bonnie!</span>
+                            <span class="h6 my-1 my-lg-2 me-3 me-lg-0">Hi, {{ Auth::user()->first_name }}!</span>
                             <a href="{{ route('logout') }}" class="btn btn-gray-300 btn-xs">
                                 <span class="me-2">
                                     <span class="fas fa-sign-out-alt"></span>
@@ -22,21 +22,40 @@
                             </a>
                         </div>
                     </div>
-                    <div class="list-group dashboard-menu list-group-sm">
+                    <hr>
+                    <div class="list-group dashboard-menu list-group-sm mt-2">
                         <a href="./account.html" class="d-flex list-group-item border-0 list-group-item-action active">
-                            <span class="icon icon-sm me-2">
-                                <span class="fa-regular fa-house"></span>
+                            <span class="icon icon-sm me-3">
+                                <span class="fas fa-gauge-high"></span>
                             </span>
                             Dashboard
-                            <span class="icon icon-xs ms-auto">
-                                <span class="fas fa-chevron-right"></span>
-                            </span>
+                            <div class="ms-auto">
+                                <span class="badge bg-primary">5</span>
+                            </div>
                         </a>
                         <a href="./account.html" class="d-flex list-group-item border-0 list-group-item-action">
-                            Overview
-                            <span class="icon icon-xs ms-auto">
-                                <span class="fas fa-chevron-right"></span>
+                            <span class="icon icon-sm me-3">
+                                <span class="fas fa-train"></span>
                             </span>
+                            Jadwal KA
+                        </a>
+                        <a href="./account.html" class="d-flex list-group-item border-0 list-group-item-action">
+                            <span class="icon icon-sm me-3">
+                                <span class="fas fa-clipboard-list"></span>
+                            </span>
+                            Checksheet
+                        </a>
+                        <a href="./account.html" class="d-flex list-group-item border-0 list-group-item-action">
+                            <span class="icon icon-sm me-3">
+                                <span class="fas fa-file-circle-check"></span>
+                            </span>
+                            Laporan
+                        </a>
+                        <a href="./account.html" class="d-flex list-group-item border-0 list-group-item-action">
+                            <span class="icon icon-sm me-3">
+                                <span class="fas fa-users"></span>
+                            </span>
+                            Pengguna
                         </a>
                     </div>
                 </div>
@@ -51,8 +70,16 @@
                             <img src="{{ asset('images/favicons/icon-192.png') }}" class="app-logo" alt="App Logo">
                         </a>
                         <div class="ms-auto">
-
-                            <a href="">sldkfjlsdk</a>
+                            <div class="dropdown">
+                                <button class="btn btn-light dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ auth()->user()->name }}
+                                    <span class="fas fa-chevron-down fa-sm ms-1"></span>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end rounded-0 rounded-bottom mt-3">
+                                    <a class="dropdown-item" href="#">Ganti Password</a>
+                                    <a class="dropdown-item text-danger" href="{{ route('logout') }}">Keluar</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </nav>

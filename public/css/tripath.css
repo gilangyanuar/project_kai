@@ -14,7 +14,7 @@
 }
 
 #sidebar-wrapper .list-group {
-  width: 15rem;
+  width: 16rem;
 }
 
 #page-content-wrapper {
@@ -47,6 +47,13 @@ img.img-avatar {
 nav img.app-logo {
   width: 48px;
 }
+
+.list-group-sm .list-group-item {
+  padding: 1rem 1rem;
+}
+  .list-group.dashboard-menu .list-group-item.active {
+    background-color: rgb(29 88 165 / 15%);
+  }
 
 @media (min-width: 768px) {
   #sidebar-wrapper {

@@ -8,7 +8,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 1055;
+  z-index: 1000;
   transition: margin 0.25s ease-out;
 }
 
@@ -57,6 +57,7 @@ nav img.app-logo {
   padding: 1rem 1rem;
 }
   .list-group.dashboard-menu .list-group-item.active {
+    color: rgb(29 88 165);
     background-color: rgb(29 88 165 / 15%);
   }
 

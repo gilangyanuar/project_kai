@@ -12,8 +12,8 @@
 
                 <main id="main-content" class="mt-2">
                     <div class="container-xl">
-
-                        <div class="row g-4 mt-2">
+                        <h1 class="fs-3 fw-light my-4">Dashboard</h1>
+                        <div class="row g-4">
                             <div class="col-md-6 col-lg-3">
                                 <div class="card">
                                     <div class="card-body p-3">
@@ -110,7 +110,7 @@
                                                         </div>
                                                         <div class="col">
                                                             <div class="d-flex flex-column flex-md-row gap-1 gap-md-3 justify-content-end">
-                                                                <span class="badge bg-tertiary">
+                                                                <span class="badge bg-info">
                                                                     08:00
                                                                 </span>
                                                                 <span class="badge bg-success">
@@ -167,14 +167,14 @@
                                                         </div>
                                                         <div class="col">
                                                             <h6 class="mb-1">
-                                                                <span class="badge bg-primary me-1">KA 150</span>
+                                                                <span class="badge bg-info me-1">KA 150</span>
                                                                 Parahyangan
                                                             </h6>
                                                             <div class="small text-muted text-danger">Kadaluarsa dalam 5 menit</div>
                                                         </div>
                                                         <div class="col">
                                                             <div class="d-flex flex-column flex-md-row gap-1 gap-md-3 justify-content-end">
-                                                                <span class="badge bg-tertiary">
+                                                                <span class="badge bg-primary">
                                                                     25-12-2025 08:00
                                                                 </span>
                                                             </div>

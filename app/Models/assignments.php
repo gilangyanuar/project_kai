@@ -20,7 +20,6 @@ class Assignments extends Model
         'jam_berangkat',
     ];
 
-    // NAMA RELASI: checksheet (huruf kecil semua)
     public function checksheet()
     {
         return $this->hasOne(\App\Models\Checksheet_Master::class, 'no_ka', 'no_ka');

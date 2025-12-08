@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light border-bottom">
-    <div class="container-fluid justify-content-start">
+    <div class="container-xl justify-content-start">
         <button class="btn btn-icon-only w-auto me-2" id="sidebarToggle" data-toggle="sidebar">
             <span class="material-symbols-outlined">menu</span>
         </button>

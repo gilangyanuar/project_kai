@@ -2,11 +2,13 @@ class ChecksheetItemModel {
   final String itemPemeriksaan;
   String hasilInput; // BAIK, RUSAK, TIADA
   String keterangan;
+  String jumlah;
 
   ChecksheetItemModel({
     required this.itemPemeriksaan,
     this.hasilInput = '',
     this.keterangan = '',
+    this.jumlah = '1 Brg',
   });
 
   Map<String, dynamic> toJson() {
@@ -22,6 +24,7 @@ class ChecksheetItemModel {
       itemPemeriksaan: json['item_pemeriksaan'],
       hasilInput: json['hasil_input'] ?? '',
       keterangan: json['keterangan'] ?? '',
+      jumlah: json['jumlah'] ?? '1 Brg',
     );
   }
 }

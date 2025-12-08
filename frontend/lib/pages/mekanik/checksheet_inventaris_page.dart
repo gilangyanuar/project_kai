@@ -52,8 +52,7 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
     super.initState();
     _initializeToolBoxItems();
 
-    // DITAMBAHKAN: Setup scroll listener
-    _scrollController.addListener(_updateScrollArrows); // ✅ DIUBAH
+    _scrollController.addListener(_updateScrollArrows);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _updateScrollArrows();
     });
@@ -61,7 +60,6 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
 
   @override
   void dispose() {
-    // DITAMBAHKAN: Cleanup
     _scrollController.removeListener(_updateScrollArrows);
     _scrollController.dispose();
     super.dispose();
@@ -77,7 +75,6 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
       _showLeftArrow = currentScroll > 0;
       _showRightArrow = currentScroll < maxScroll;
 
-      // Hitung progress scroll (0.0 - 1.0)
       if (maxScroll > 0) {
         _scrollProgress = (currentScroll / maxScroll).clamp(0.0, 1.0);
       } else {
@@ -104,23 +101,38 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
 
   void _initializeToolBoxItems() {
     _toolBoxItems = [
-      ChecksheetItemModel(itemPemeriksaan: '1. Serbaguna(27 Peralat)'),
-      ChecksheetItemModel(itemPemeriksaan: '2. Palu'),
-      ChecksheetItemModel(itemPemeriksaan: '3. Linggis kecil'),
-      ChecksheetItemModel(itemPemeriksaan: '4. Sarang kisi-kisi'),
-      ChecksheetItemModel(itemPemeriksaan: '5. V-belt'),
-      ChecksheetItemModel(itemPemeriksaan: '6. Jan Pugin'),
-      ChecksheetItemModel(itemPemeriksaan: '7. Mesin batok'),
-      ChecksheetItemModel(itemPemeriksaan: '8. Kawat'),
-      ChecksheetItemModel(itemPemeriksaan: '9. Ring block'),
-      ChecksheetItemModel(itemPemeriksaan: '10. Kain lap'),
-      ChecksheetItemModel(itemPemeriksaan: '11. Bandara putih'),
-      ChecksheetItemModel(itemPemeriksaan: '12. Bandara merah'),
-      ChecksheetItemModel(itemPemeriksaan: '13. Kabur I motif (NYKR-NYK 3mm)'),
-      ChecksheetItemModel(itemPemeriksaan: '14. Lampu LED 3 31'),
-      ChecksheetItemModel(itemPemeriksaan: '15. WD-40'),
-      ChecksheetItemModel(itemPemeriksaan: '16. Sasang timpan'),
-      ChecksheetItemModel(itemPemeriksaan: '17. Kawat'),
+      ChecksheetItemModel(
+        itemPemeriksaan: '1. Semboyan 21 Portable',
+        jumlah: '1 Set',
+      ),
+      ChecksheetItemModel(itemPemeriksaan: '2. Palu', jumlah: '1 Bh'),
+      ChecksheetItemModel(itemPemeriksaan: '3. Linggis kecil', jumlah: '1 Bh'),
+      ChecksheetItemModel(
+        itemPemeriksaan: '4. Selang air brake',
+        jumlah: '1 Bh',
+      ),
+      ChecksheetItemModel(itemPemeriksaan: '5. V-belt', jumlah: '1 Bh'),
+      ChecksheetItemModel(itemPemeriksaan: '6. Jas hujan', jumlah: '1 Bh'),
+      ChecksheetItemModel(itemPemeriksaan: '7. Rem blok', jumlah: '1 Bh'),
+      ChecksheetItemModel(itemPemeriksaan: '8. Kawat', jumlah: '1 Bh'),
+      ChecksheetItemModel(itemPemeriksaan: '9. Stop block', jumlah: '4 Bh'),
+      ChecksheetItemModel(itemPemeriksaan: '10. Kain lap', jumlah: '1 Bh'),
+      ChecksheetItemModel(itemPemeriksaan: '11. Bandara putih', jumlah: '1 Bh'),
+      ChecksheetItemModel(itemPemeriksaan: '12. Bandara merah', jumlah: '1 Bh'),
+      ChecksheetItemModel(
+        itemPemeriksaan: '13. Kabel 1 meter NYAF, NYHY θ 2,5mm',
+        jumlah: '1 Bh',
+      ),
+      ChecksheetItemModel(
+        itemPemeriksaan: '14. Lampu LED S.21',
+        jumlah: '2 Bh',
+      ),
+      ChecksheetItemModel(itemPemeriksaan: '15. WD-40', jumlah: '1 Bh'),
+      ChecksheetItemModel(
+        itemPemeriksaan: '16. Sarung tangan',
+        jumlah: '1 Set',
+      ),
+      ChecksheetItemModel(itemPemeriksaan: '17. Kran air', jumlah: '1 Bh'),
     ];
   }
 
@@ -143,40 +155,34 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // ✅ Header dengan Logo dan Profile
           _buildCustomHeader(),
-
-          // ✅ Tombol Kembali (Terpisah)
           _buildBackButton(),
-
-          // ✅ Info Laporan Card
           _buildLaporanInfoCard(),
-
-          // ✅ Horizontal Sheet Tabs
           _buildSheetTabs(),
-
-          // ✅ Sheet Name Title
           _buildSheetTitle(),
 
-          // List Items
+          // ✅ UPDATE: Gabungkan ListView dengan Bottom Button
           Expanded(
-            child: ListView.builder(
+            child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              itemCount: _toolBoxItems.length,
-              itemBuilder: (context, index) {
-                return _buildChecklistItem(_toolBoxItems[index], index);
-              },
+              children: [
+                // ✅ List semua checksheet items
+                ..._toolBoxItems.asMap().entries.map((entry) {
+                  return _buildChecklistItem(entry.value, entry.key);
+                }).toList(),
+
+                // ✅ Bottom button di dalam ListView (bisa di-scroll)
+                const SizedBox(height: 16.0), // Spacing sebelum button
+                _buildBottomButton(),
+                const SizedBox(height: 16.0), // Spacing setelah button
+              ],
             ),
           ),
-
-          // Bottom Button
-          _buildBottomButton(),
         ],
       ),
     );
   }
 
-  //Custom Header dengan Logo dan Profile
   Widget _buildCustomHeader() {
     return Container(
       decoration: const BoxDecoration(
@@ -193,7 +199,6 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Logo KAI
               Image.asset(
                 'assets/logo_putih.png',
                 height: 40,
@@ -216,8 +221,6 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
                   );
                 },
               ),
-
-              // Profile Avatar
               CircleAvatar(
                 radius: 20.0,
                 backgroundColor: Colors.white,
@@ -248,7 +251,6 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
     );
   }
 
-  // Tombol "Kembali ke Dashboard"
   Widget _buildBackButton() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
@@ -281,7 +283,6 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
     );
   }
 
-  //Info Laporan Card
   Widget _buildLaporanInfoCard() {
     return Container(
       width: double.infinity,
@@ -305,7 +306,6 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Nama KA
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -319,7 +319,6 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
                       ),
                     ),
                     const SizedBox(height: 4.0),
-                    // Rich Text dengan warna berbeda
                     RichText(
                       text: TextSpan(
                         style: GoogleFonts.inter(
@@ -342,8 +341,6 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
                   ],
                 ),
               ),
-
-              // Status Badge
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12.0,
@@ -379,8 +376,6 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
           const SizedBox(height: 12.0),
           Divider(color: Colors.grey.shade200, height: 1.0),
           const SizedBox(height: 12.0),
-
-          // Info tambahan
           Row(
             children: [
               Icon(Icons.access_time, size: 14.0, color: Colors.grey[600]),
@@ -399,7 +394,6 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
     );
   }
 
-  //Horizontal Sheet Tabs
   Widget _buildSheetTabs() {
     return Container(
       margin: const EdgeInsets.only(bottom: 12.0),
@@ -411,9 +405,8 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
       ),
       child: Column(
         children: [
-          // Tabs dengan panah
           SizedBox(
-            height: 50.0, // ?. Tambah tinggi untuk spacing
+            height: 50.0,
             child: NotificationListener<ScrollNotification>(
               onNotification: (notification) {
                 if (notification is ScrollUpdateNotification ||
@@ -429,7 +422,7 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
                   vertical: 4.0,
-                ), // ?. Tambah vertical padding
+                ),
                 itemCount: _sheets.length,
                 itemBuilder: (context, index) {
                   final sheet = _sheets[index];
@@ -487,16 +480,13 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
               ),
             ),
           ),
-
-          // ?. Scroll Indicator (Spacing + Design seperti gambar)
-          const SizedBox(height: 1.0), // ?. Spacing antara tabs dan indicator
+          const SizedBox(height: 1.0),
           _buildScrollIndicator(),
         ],
       ),
     );
   }
 
-  //Scroll Indicator dengan design seperti gambar referensi
   Widget _buildScrollIndicator() {
     if (!_scrollController.hasClients) {
       return Padding(
@@ -609,40 +599,46 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
   }) {
     return InkWell(
       onTap: enabled ? onTap : null,
-      borderRadius: BorderRadius.circular(
-        4.0,
-      ), // ✅ Radius kecil untuk ripple effect
+      borderRadius: BorderRadius.circular(4.0),
       child: Padding(
-        padding: const EdgeInsets.all(4.0), // ✅ Padding untuk area tap
+        padding: const EdgeInsets.all(4.0),
         child: Icon(
           isLeft ? Icons.chevron_left : Icons.chevron_right,
-          size: 20.0, // ✅ Ukuran diperbesar karena tidak ada lingkaran
+          size: 20.0,
           color: enabled ? const Color(0xFF7B83EB) : Colors.grey.shade400,
         ),
       ),
     );
   }
 
-  // ✅ 4. Sheet Title
   Widget _buildSheetTitle() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+    final completedCount =
+        _toolBoxItems.where((item) => item.hasilInput.isNotEmpty).length;
+    final totalCount = _toolBoxItems.length;
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 12.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          bottom: BorderSide(color: Colors.grey.shade200, width: 1.0),
+        ),
+      ),
       child: Row(
         children: [
           Text(
             'Tool Box Checksheet (Inventaris)',
             style: GoogleFonts.plusJakartaSans(
-              fontSize: 16.0,
+              fontSize: 15.0,
               fontWeight: FontWeight.w700,
               color: Colors.black,
             ),
           ),
           const Spacer(),
-          // Progress indicator
           Text(
-            '${_toolBoxItems.where((item) => item.hasilInput.isNotEmpty).length}/${_toolBoxItems.length}',
+            '$completedCount/$totalCount',
             style: GoogleFonts.inter(
-              fontSize: 14.0,
+              fontSize: 13.0,
               fontWeight: FontWeight.w600,
               color: Colors.grey[600],
             ),
@@ -652,94 +648,105 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
     );
   }
 
+  //TextField
   Widget _buildChecklistItem(ChecksheetItemModel item, int index) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16.0),
+      margin: const EdgeInsets.only(bottom: 12.0),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12.0),
+        borderRadius: BorderRadius.circular(8.0),
         border: Border.all(
           color:
               item.hasilInput.isEmpty
                   ? Colors.grey.shade300
                   : const Color(0xFF2196F3),
-          width: item.hasilInput.isEmpty ? 1.0 : 2.0,
+          width: 1.0,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 8.0,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            item.itemPemeriksaan,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 14.0,
-              fontWeight: FontWeight.w700,
-              color: Colors.black,
-            ),
-          ),
-          const SizedBox(height: 12.0),
-
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildRadioButton(item, 'Baik', const Color(0xFF4CAF50)),
-              const SizedBox(width: 12.0),
-              _buildRadioButton(item, 'Rusak', const Color(0xFFFFC107)),
-              const SizedBox(width: 12.0),
-              _buildRadioButton(item, 'Tiada ada', const Color(0xFFF44336)),
-            ],
-          ),
-
-          if (item.hasilInput.isNotEmpty) ...[
-            const SizedBox(height: 12.0),
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Keterangan (opsional)',
-                hintStyle: GoogleFonts.inter(
-                  fontSize: 13.0,
-                  color: Colors.grey[400],
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 12.0,
-                  vertical: 10.0,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(color: Colors.grey.shade300),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(color: Colors.grey.shade300),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(color: Color(0xFF2196F3)),
+              Expanded(
+                child: Text(
+                  item.itemPemeriksaan,
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                    height: 1.4,
+                  ),
                 ),
               ),
-              style: GoogleFonts.inter(fontSize: 13.0),
-              maxLines: 2,
-              onChanged: (value) {
-                item.keterangan = value;
-              },
+              const SizedBox(width: 8.0),
+              //UPDATE: Gunakan item.jumlah bukan completedCount
+              Text(
+                'JML: ${item.jumlah}', // ✅ DIUBAH DI SINI
+                style: GoogleFonts.inter(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12.0),
+          Row(
+            children: [
+              _buildRadioButton(item, 'Baik'),
+              const SizedBox(width: 8.0),
+              _buildRadioButton(item, 'Rusak'),
+              const SizedBox(width: 8.0),
+              _buildRadioButton(item, 'Tidak ada'),
+            ],
+          ),
+          const SizedBox(height: 12.0),
+          TextField(
+            decoration: InputDecoration(
+              hintText: 'Keterangan(Opsional)',
+              hintStyle: GoogleFonts.inter(
+                fontSize: 12.0,
+                color: Colors.grey[400],
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 12.0,
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade50,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: const BorderSide(
+                  color: Color(0xFF2196F3),
+                  width: 1.5,
+                ),
+              ),
             ),
-          ],
+            style: GoogleFonts.inter(fontSize: 13.0, color: Colors.black87),
+            maxLines: 3,
+            minLines: 2,
+            onChanged: (value) {
+              item.keterangan = value;
+            },
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildRadioButton(
-    ChecksheetItemModel item,
-    String label,
-    Color color,
-  ) {
+  //Radio Button Tanpa Icon, Warna Biru Saja
+  Widget _buildRadioButton(ChecksheetItemModel item, String label) {
     final isSelected = item.hasilInput.toUpperCase() == label.toUpperCase();
 
     return Expanded(
@@ -749,54 +756,36 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
             item.hasilInput = label.toUpperCase();
           });
         },
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(6.0),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
           decoration: BoxDecoration(
-            color: isSelected ? color.withOpacity(0.1) : Colors.white,
-            borderRadius: BorderRadius.circular(8.0),
+            color:
+                isSelected
+                    ? const Color(0xFF2196F3) // ✅ Biru solid saat selected
+                    : Colors.grey.shade50, // ✅ Abu-abu saat tidak selected
+            borderRadius: BorderRadius.circular(6.0),
             border: Border.all(
-              color: isSelected ? color : Colors.grey.shade300,
-              width: isSelected ? 2.0 : 1.0,
+              color:
+                  isSelected ? const Color(0xFF2196F3) : Colors.grey.shade300,
+              width: 1.0,
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 18.0,
-                height: 18.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: isSelected ? color : Colors.grey.shade400,
-                    width: 2.0,
-                  ),
-                  color: isSelected ? color : Colors.transparent,
-                ),
-                child:
+          child: Center(
+            child: Text(
+              label,
+              style: GoogleFonts.inter(
+                fontSize: 12.0,
+                fontWeight: FontWeight.w600,
+                color:
                     isSelected
-                        ? const Icon(
-                          Icons.check,
-                          size: 12.0,
-                          color: Colors.white,
-                        )
-                        : null,
+                        ? Colors
+                            .white // ✅ Putih saat selected
+                        : Colors.grey[700], // ✅ Abu-abu saat tidak selected
               ),
-              const SizedBox(width: 6.0),
-              Flexible(
-                child: Text(
-                  label,
-                  style: GoogleFonts.inter(
-                    fontSize: 12.0,
-                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                    color: isSelected ? color : Colors.grey[700],
-                  ),
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
       ),
@@ -806,52 +795,38 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
   Widget _buildBottomButton() {
     final allFilled = _toolBoxItems.every((item) => item.hasilInput.isNotEmpty);
 
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10.0,
-            offset: const Offset(0, -2),
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: allFilled && !_isLoading ? _handleSimpan : null,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF2196F3),
+          foregroundColor: Colors.white,
+          disabledBackgroundColor: Colors.grey.shade300,
+          padding: const EdgeInsets.symmetric(vertical: 14.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
           ),
-        ],
-      ),
-      child: SafeArea(
-        child: SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: allFilled && !_isLoading ? _handleSimpan : null,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF2196F3),
-              foregroundColor: Colors.white,
-              disabledBackgroundColor: Colors.grey.shade300,
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              elevation: 0,
-            ),
-            child:
-                _isLoading
-                    ? const SizedBox(
-                      height: 20.0,
-                      width: 20.0,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2.0,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
-                    )
-                    : Text(
-                      'Simpan Tool Box',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-          ),
+          elevation: 2, // ✅ Tambah sedikit elevation agar terlihat
         ),
+        child:
+            _isLoading
+                ? const SizedBox(
+                  height: 20.0,
+                  width: 20.0,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.5,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                )
+                : Text(
+                  'Simpan Tool Box',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.3,
+                  ),
+                ),
       ),
     );
   }

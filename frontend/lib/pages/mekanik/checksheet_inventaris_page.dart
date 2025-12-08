@@ -161,17 +161,17 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
           _buildSheetTabs(),
           _buildSheetTitle(),
 
-          // ✅ UPDATE: Gabungkan ListView dengan Bottom Button
+          //Gabungan ListView dengan Bottom Button
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               children: [
-                // ✅ List semua checksheet items
+                // List semua checksheet items
                 ..._toolBoxItems.asMap().entries.map((entry) {
                   return _buildChecklistItem(entry.value, entry.key);
                 }).toList(),
 
-                // ✅ Bottom button di dalam ListView (bisa di-scroll)
+                // Bottom button di dalam ListView
                 const SizedBox(height: 16.0), // Spacing sebelum button
                 _buildBottomButton(),
                 const SizedBox(height: 16.0), // Spacing setelah button
@@ -264,7 +264,7 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
             children: [
               Icon(
                 Icons.arrow_back,
-                color: const Color(0xFF2196F3),
+                color: const Color(0xFF0063F7),
                 size: 20.0,
               ),
               const SizedBox(width: 8.0),
@@ -273,7 +273,7 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
                 style: GoogleFonts.plusJakartaSans(
                   fontSize: 15.0,
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xFF2196F3),
+                  color: const Color(0xFF0063F7),
                 ),
               ),
             ],
@@ -330,7 +330,7 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
                           TextSpan(
                             text: 'GMR-SMT',
                             style: TextStyle(
-                              color: const Color(0xFF2196F3),
+                              color: const Color(0xFF0063F7),
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -444,7 +444,7 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
                       decoration: BoxDecoration(
                         color:
                             isSelected
-                                ? const Color(0xFF2196F3)
+                                ? const Color(0xFF0063F7)
                                 : Colors.grey.shade100,
                         borderRadius: BorderRadius.circular(12.0),
                       ),
@@ -563,15 +563,8 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
                           height: 5.0,
                           width: indicatorWidth,
                           decoration: BoxDecoration(
-                            color: const Color(0xABAAC4),
+                            color: const Color(0xFFABAAC4),
                             borderRadius: BorderRadius.circular(12.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xABAAC4).withOpacity(0.25),
-                                blurRadius: 0.0,
-                                offset: const Offset(0, 1),
-                              ),
-                            ],
                           ),
                         ),
                       ),
@@ -684,7 +677,7 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
               const SizedBox(width: 8.0),
               //UPDATE: Gunakan item.jumlah bukan completedCount
               Text(
-                'JML: ${item.jumlah}', // ✅ DIUBAH DI SINI
+                'JML: ${item.jumlah}',
                 style: GoogleFonts.inter(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w500,
@@ -760,14 +753,11 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
           decoration: BoxDecoration(
-            color:
-                isSelected
-                    ? const Color(0xFF2196F3) // ✅ Biru solid saat selected
-                    : Colors.grey.shade50, // ✅ Abu-abu saat tidak selected
+            color: isSelected ? const Color(0xFF0063F7) : Colors.grey.shade50,
             borderRadius: BorderRadius.circular(6.0),
             border: Border.all(
               color:
-                  isSelected ? const Color(0xFF2196F3) : Colors.grey.shade300,
+                  isSelected ? const Color(0xFF0063F7) : Colors.grey.shade300,
               width: 1.0,
             ),
           ),
@@ -777,11 +767,7 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
               style: GoogleFonts.inter(
                 fontSize: 12.0,
                 fontWeight: FontWeight.w600,
-                color:
-                    isSelected
-                        ? Colors
-                            .white // ✅ Putih saat selected
-                        : Colors.grey[700], // ✅ Abu-abu saat tidak selected
+                color: isSelected ? Colors.white : Colors.grey[700],
               ),
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
@@ -800,14 +786,14 @@ class _ChecksheetInventarisPageState extends State<ChecksheetInventarisPage> {
       child: ElevatedButton(
         onPressed: allFilled && !_isLoading ? _handleSimpan : null,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF2196F3),
+          backgroundColor: const Color(0xFF0063F7),
           foregroundColor: Colors.white,
           disabledBackgroundColor: Colors.grey.shade300,
           padding: const EdgeInsets.symmetric(vertical: 14.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
-          elevation: 2, // ✅ Tambah sedikit elevation agar terlihat
+          elevation: 2,
         ),
         child:
             _isLoading

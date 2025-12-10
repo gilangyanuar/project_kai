@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Checksheet_Data extends Model
 {
-    protected $table = "checksheet_data";
+    protected $table = "checksheet__data";
     protected $primaryKey = "data_id";
     public $incrementing = true;
     public $timestamp = false;

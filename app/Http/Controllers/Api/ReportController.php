@@ -149,5 +149,265 @@ class ReportController extends Controller
             'message' => "Data '{$namaSheet}' telah berhasil disimpan.",
         ], 200);
     }   // <--- method simpanDataInventaris selesai
+     /**
+     * POST /api/laporan/{id}/simpan-data-komponen
+     * Tipe 2 – Komponen / Mekanik / Genset
+     */
+    public function simpanDataKomponen(Request $request, int $id)
+    {
+        $mekanik = $request->user();
+        if (! $mekanik) {
+            return response()->json([
+                'message' => 'Unauthenticated.',
+            ], 401);
+        }
+
+        $validated = $request->validate([
+            'nama_sheet'      => ['required', 'string'],
+            'data'            => ['required', 'array', 'min:1'],
+            'data.*.item_pemeriksaan' => ['required', 'string'],
+            'data.*.standar'          => ['required', 'string'],
+            'data.*.hasil_input'      => ['required', 'string'],
+            'data.*.keterangan'       => ['nullable', 'string'],
+        ]);
+
+        $namaSheet = $validated['nama_sheet'];
+        $laporan   = Checksheet_Master::findOrFail($id);
+        $mekanikId = $mekanik->user_id;
+
+        $bolehEdit = ((int) $laporan->mekanik_id === (int) $mekanikId)
+            && $laporan->status !== 'Approved';
+
+        if (! $bolehEdit) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Anda tidak memiliki izin untuk mengubah laporan ini.',
+            ], 403);
+        }
+
+        foreach ($validated['data'] as $row) {
+            \App\Models\Checksheet_Data::updateOrCreate(
+                [
+                    'master_id'        => $laporan->master_id,
+                    'nama_sheet'       => $namaSheet,
+                    'item_pemeriksaan' => $row['item_pemeriksaan'],
+                ],
+                [
+                    'standar'     => $row['standar'],
+                    'hasil_input' => $row['hasil_input'],
+                    'keterangan'  => $row['keterangan'] ?? null,
+                ]
+            );
+        }
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => "Data '{$namaSheet}' telah berhasil disimpan.",
+        ], 200);
+    }
+        /**
+     * POST /api/laporan/{id}/simpan-data-matriks
+     * Tipe 3 – Matriks (Mekanik 2 / Electric)
+     */
+    public function simpanDataMatriks(Request $request, int $id)
+    {
+        $mekanik = $request->user();
+        if (! $mekanik) {
+            return response()->json([
+                'message' => 'Unauthenticated.',
+            ], 401);
+        }
+
+        // Validasi sesuai dokumentasi
+        $validated = $request->validate([
+            'nama_sheet'      => ['required', 'string'],
+            'data'            => ['required', 'array', 'min:1'],
+
+            'data.*.item_pemeriksaan' => ['required', 'string'],
+            'data.*.nomor_gerbong'    => ['required', 'string'],
+            'data.*.standar'          => ['required', 'string'],
+            'data.*.hasil_input'      => ['required', 'string'],
+            'data.*.keterangan'       => ['nullable', 'string'],
+        ]);
+
+        $namaSheet = $validated['nama_sheet'];
+
+        // Ambil master laporan
+        $laporan   = Checksheet_Master::findOrFail($id);
+        $mekanikId = $mekanik->user_id;
+
+        // Hanya pemilik & status bukan Approved yang boleh edit
+        $bolehEdit = ((int) $laporan->mekanik_id === (int) $mekanikId)
+            && $laporan->status !== 'Approved';
+
+        if (! $bolehEdit) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Anda tidak memiliki izin untuk mengubah laporan ini.',
+            ], 403);
+        }
+
+        // Simpan / update tiap sel matriks
+        foreach ($validated['data'] as $row) {
+           \App\Models\Checksheet_Data::updateOrCreate(
+                [
+                    'master_id'        => $laporan->master_id,
+                    'nama_sheet'       => $namaSheet,
+                    'item_pemeriksaan' => $row['item_pemeriksaan'],
+                    'nomor_gerbong'    => $row['nomor_gerbong'],
+                ],
+                [
+                    'standar'     => $row['standar'],
+                    'hasil_input' => $row['hasil_input'],
+                    'keterangan'  => $row['keterangan'] ?? null,
+                ]
+            );
+        }
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => "Data '{$namaSheet}' telah berhasil disimpan.",
+        ], 200);
+    }
+    /**
+     * POST /api/laporan/{id}/ajukan-approval
+     *
+     * Mengubah status laporan dari Draft -> Pending (Pending Approval)
+     * setelah memvalidasi kepemilikan & kelengkapan 6 sheet pra-keberangkatan.
+     */
+    public function ajukanApproval(Request $request, int $id)
+    {
+        $mekanik = $request->user();
+        if (! $mekanik) {
+            return response()->json([
+                'message' => 'Unauthenticated.',
+            ], 401);
+        }
+
+        // Ambil laporan
+        $laporan = Checksheet_Master::findOrFail($id);
+        $mekanikId = $mekanik->user_id;
+
+        // Hanya pemilik yang boleh submit
+        if ((int) $laporan->mekanik_id !== (int) $mekanikId) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Anda tidak memiliki izin untuk mengubah laporan ini.',
+            ], 403);
+        }
+
+        // Kalau sudah Approved, jelas nggak boleh
+        if ($laporan->status === 'Approved') {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Laporan ini sudah berstatus Approved dan tidak dapat diajukan kembali.',
+            ], 403);
+        }
+
+        // 6 sheet pra-keberangkatan yang wajib ada
+        $requiredSheets = [
+            'Tool Box',
+            'Tool Kit',
+            'Mekanik',
+            'Genset',
+            'Mekanik 2',
+            'Electric',
+        ];
+
+        $completed = [];
+        $missing   = [];
+
+        foreach ($requiredSheets as $sheet) {
+            $exists =\App\Models\Checksheet_Data::where('master_id', $laporan->master_id)
+                ->where('nama_sheet', $sheet)
+                ->exists();
+
+            if ($exists) {
+                $completed[] = $sheet;
+            } else {
+                $missing[] = $sheet;
+            }
+        }
+
+        // Jika masih ada sheet yang belum diisi → 422
+        if (! empty($missing)) {
+            return response()->json([
+                'status' => [
+                    'completed_sheets' => $completed,
+                    'missing_sheets'   => $missing,
+                ],
+                'message' => 'Gagal mengajukan: Pastikan semua 6 form pra-keberangkatan sudah terisi lengkap.',
+            ], 422);
+        }
+
+        // Semua sheet lengkap → ubah status ke Pending (Pending Approval)
+        $laporan->status       = 'Pending';  // DB enum kamu: Draft / Pending / Approval / Approved / Rejected
+        $laporan->submitted_at = now();
+        $laporan->save();
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Laporan telah berhasil diajukan ke Pengawas.',
+            'data'    => [
+                'laporan_id' => $laporan->master_id,
+                'new_status' => $laporan->status, // "Pending"
+            ],
+        ], 200);
+    }
+       public function logGangguan(Request $request, int $id)
+    {
+        $mekanik = $request->user();
+        if (! $mekanik) {
+            return response()->json([
+                'message' => 'Unauthenticated.',
+            ], 401);
+        }
+
+        // Validasi input (422 kalau gagal)
+        $validated = $request->validate([
+            'identitas_komponen' => ['required', 'string'],
+            'bentuk_gangguan'    => ['required', 'string'],
+            'tindak_lanjut'      => ['required', 'string'],
+        ]);
+
+        // Ambil laporan induk
+        $laporan   = Checksheet_Master::findOrFail($id);
+        $mekanikId = $mekanik->user_id;
+
+        // Hanya pemilik laporan yang boleh nambah log
+        if ((int) $laporan->mekanik_id !== (int) $mekanikId) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Anda tidak memiliki izin untuk mengubah laporan ini.',
+            ], 403);
+        }
+
+        // Insert baris baru ke tabel log_gangguans (atau sesuai model-mu)
+        $now = now();
+
+        /** @var \App\Models\Log_Gangguan $log */
+        $log = \App\Models\Log_Gangguan::create([
+            'master_id'          => $laporan->master_id,
+            'identitas_komponen' => $validated['identitas_komponen'],
+            'bentuk_gangguan'    => $validated['bentuk_gangguan'],
+            'tindak_lanjut'      => $validated['tindak_lanjut'],
+            'waktu_lapor'        => $now, // pastikan kolom ini ada di tabel1
+        ]);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Log gangguan berhasil ditambahkan.',
+            'data'    => [
+                // sesuaikan dengan nama PK di tabelmu
+                'gangguan_id'        => $log->gangguan_id ?? $log->id,
+                'master_id'          => $log->master_id,
+                'identitas_komponen' => $log->identitas_komponen,
+                'bentuk_gangguan'    => $log->bentuk_gangguan,
+                'tindak_lanjut'      => $log->tindak_lanjut,
+                'waktu_lapor'        => $log->waktu_lapor,
+            ],
+        ], 201);
+    }
+
 }
 

@@ -13,4 +13,8 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('/logout', [AuthController::class, 'APILogout']);
     Route::post('/laporan/cek-atau-buat', [ReportController::class, 'cekAtauBuat']);
     Route::post('/laporan/{id}/simpan-data-inventaris', [ReportController::class, 'simpanDataInventaris']);
+    Route::post('/laporan/{id}/simpan-data-komponen',   [ReportController::class, 'simpanDataKomponen']);
+    Route::post('/laporan/{id}/simpan-data-matriks',    [ReportController::class, 'simpanDataMatriks']);
+    Route::post('/laporan/{id}/ajukan-approval',        [ReportController::class, 'ajukanApproval']);
+    Route::post('/laporan/{id}/log-gangguan',           [ReportController::class, 'logGangguan']);
 });

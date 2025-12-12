@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'checksheet_inventaris_page.dart';
+import 'checksheet_gerbong_fase_page.dart';
+import 'gangguan_form_page.dart';
 import '../../models/user_model.dart';
 import '../../models/jadwal_model.dart';
 import '../../models/checksheet_komponen_model.dart';
@@ -391,6 +393,34 @@ class _ChecksheetKomponenPageState extends State<ChecksheetKomponenPage> {
                             _listScrollController.jumpTo(0);
                           }
                         });
+                      } else if (sheetName == 'Mekanik 2' ||
+                          sheetName == 'Elektrik') {
+                        //Navigate ke Gerbong Fase Page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => ChecksheetGerbongFasePage(
+                                  user: widget.user,
+                                  jadwal: widget.jadwal,
+                                  laporanId: widget.laporanId,
+                                  sheetType: sheetName,
+                                ),
+                          ),
+                        );
+                      } else if (sheetName == 'Gangguan') {
+                        // Show Coming Soon untuk Gangguan
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => GangguanFormPage(
+                                  user: widget.user,
+                                  jadwal: widget.jadwal,
+                                  laporanId: widget.laporanId,
+                                ),
+                          ),
+                        );
                       } else {
                         // Untuk sheet lainnya (Mekanik 2, Elektrik, Gangguan)
                         // Bisa redirect ke page berbeda atau show coming soon
@@ -580,18 +610,18 @@ class _ChecksheetKomponenPageState extends State<ChecksheetKomponenPage> {
     if (_currentSheet == 'Mekanik') {
       _kategoriList = [
         ChecksheetKategoriModel(
-          namaKategori: 'ALAT KOPLING TARIK',
+          namaKategori: 'ALAT TOLAK TARIK',
           items: [
             ChecksheetKomponenModel(
-              itemPemeriksaan: '1. Kopler Mekanik',
+              itemPemeriksaan: 'a. Kopler Mekanik',
               standar: 'Lengkap',
             ),
             ChecksheetKomponenModel(
-              itemPemeriksaan: '2. Kabel Tiang Otot',
+              itemPemeriksaan: 'b. Selisih Tinggi Buffer',
               standar: 'Baik/Utuh',
             ),
             ChecksheetKomponenModel(
-              itemPemeriksaan: '3. Rantai Penarik Kait',
+              itemPemeriksaan: 'c. Klaw dan Pen Klaw',
               standar: 'Baik',
             ),
           ],
@@ -600,58 +630,73 @@ class _ChecksheetKomponenPageState extends State<ChecksheetKomponenPage> {
           namaKategori: 'BOGIE & PERANGKATNYA',
           items: [
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'a. Pegas Daun / Primary Suspension',
+              itemPemeriksaan: 'a. Pegas Daun/ Primer/ Sekunder',
               standar: 'Baik',
             ),
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'b. Bantalan Dimper/ Spring Anchor',
+              itemPemeriksaan: 'b. Bantalan Gandar/ Bearing Axlebox',
               standar: 'Baik/Utuh',
             ),
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'c. Pergerakan Balok Ayun',
+              itemPemeriksaan: 'c. Penyangga Balk Ayun',
               standar: 'Baik',
             ),
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'd. Bak Rami / Beaker',
+              itemPemeriksaan: 'd. Balk Ayun / Bolster',
               standar: 'Baik',
             ),
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'e. Kebersihan Perangkat',
+              itemPemeriksaan: 'e. Gantungan Pengaman',
               standar: 'Lengkap, Baik/Utuh',
             ),
-          ],
-        ),
-        ChecksheetKategoriModel(
-          namaKategori: 'RODA & GANDARNYA',
-          items: [
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'a. Roda Akhir / Beaker',
-              standar: 'Baik',
+              itemPemeriksaan: 'f. Axle Box',
+              standar: 'Baik/Tidak Bocor',
             ),
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'b. Body Rami / Beaker',
-              standar: 'Baik',
-            ),
-          ],
-        ),
-        ChecksheetKategoriModel(
-          namaKategori: 'PEMERIKSAAN',
-          items: [
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'a. Kebersihan/ Penampungan',
-              standar: 'Bersih',
-            ),
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'b. Semua',
-              standar: 'Min. 4 Kg/ cm² atau sesuai SIK',
-            ),
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'c. Kondisi Ban Blok',
+              itemPemeriksaan: 'g. Sluistik dan Mur Baud Pengaman(Bogie K5)',
               standar: 'Lengkap',
             ),
+          ],
+        ),
+        ChecksheetKategoriModel(
+          namaKategori: 'PENGEREMAN',
+          items: [
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'd. Rem-Gantingan',
-              standar: 'Baik/ Lengkap',
+              itemPemeriksaan: 'a. Tekanan Udara Pengereman',
+              standar: 'Baik',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'b. Kebocoran Saluran Pengereman',
+              standar: 'Baik',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'c. Kondisi Rem Blok',
+              standar: 'Baik/Tidak Aus',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'd. Stang Rem',
+              standar: 'Berfungsi',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'e. Control Valve ( Distributor Valve)',
+              standar: 'Berfungsi',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'f. Slack Adjuster (Jurson)',
+              standar: 'Berfungsi',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'g. Sylinder Rem',
+              standar: 'Berfungsi',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'h. Kondisi Triangle',
+              standar: 'Berfungsi',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'i. Pengaman Triangle',
+              standar: 'Berfungsi',
             ),
           ],
         ),
@@ -662,135 +707,120 @@ class _ChecksheetKomponenPageState extends State<ChecksheetKomponenPage> {
               itemPemeriksaan: 'a. Kereta/GAS',
               standar: 'Baik',
             ),
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'b. Listrik',
-              standar: 'Baik',
-            ),
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'c. No AC/Kompresor',
-              standar: '3 Unit (HP)',
-            ),
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'd. Indikasi pintu-pintu',
-              standar: 'Baik/lengkap dan berfungsi',
-            ),
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'e. Anjuran',
-              standar: 'Min. 2 Kg/ cm²',
-            ),
-          ],
-        ),
-        ChecksheetKategoriModel(
-          namaKategori: 'HIDRAULIK BRAKE',
-          items: [
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'a. Cylinder/ Distributor Wheel',
-              standar: 'Baik/Tidak Bocor',
-            ),
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'b. Slang/ piping/ Fitting',
-              standar: 'Baik/Tidak Bocor',
-            ),
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'c. Block Aplikasi cylinder (Jika ada)',
-              standar: 'Tidak Retak dan Aus',
-            ),
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'd. Accul (Indikator vert. 13)',
-              standar: 'Baik/Tidak',
-            ),
-          ],
-        ),
-        ChecksheetKategoriModel(
-          namaKategori: 'PENGARAH BRACKET',
-          items: [
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'a. Kondisi gerakan-slinder, piston dll',
-              standar: 'Baik (Tidak macet & lancar)',
-            ),
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'b. Kondisi gerakan slinder piston',
-              standar: 'Baik (Tidak Bocor)',
-            ),
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'c. Brake slinding piston (10)',
-              standar: 'Baik (Tidak Bocor)',
-            ),
-          ],
-        ),
-        ChecksheetKategoriModel(
-          namaKategori: 'INTERIOR/CEILING',
-          items: [
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'a. Interior/Ceiling (Normal)',
-              standar: 'Baik/Normal',
-            ),
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'b. Tempat/Jalur',
-              standar: 'Bersih',
-            ),
-          ],
-        ),
-        ChecksheetKategoriModel(
-          namaKategori: 'PENANGKAL GUNCANG',
-          items: [
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'a. Penangkal Stickon',
-              standar: 'Berfungsi',
-            ),
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'b. Penangkal',
-              standar: 'Terpasang',
-            ),
           ],
         ),
       ];
     } else if (_currentSheet == 'Genset') {
       _kategoriList = [
         ChecksheetKategoriModel(
-          namaKategori: 'PEMERIKSAAN',
+          namaKategori: 'KONDISI GENSET AWAL',
           items: [
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'a. Kebersihan/Penampungan',
-              standar: 'Bersih',
+              itemPemeriksaan: 'a. Bocoran/ Tetesan Pelumas, air, HSD',
+              standar: 'Tidak Ada',
             ),
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'b. Sumber',
-              standar: 'Min. 4 Kg/ cm² atau sesuai SIK',
+              itemPemeriksaan: 'b. HSD didalam pipa ukur',
+              standar: 'Cukup',
             ),
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'c. Kondisi Ban Blok',
-              standar: 'Lengkap',
+              itemPemeriksaan: 'c. Air Pendingin pada gelas ukur',
+              standar: 'Cukup',
             ),
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'd. Kunci Palu',
-              standar: 'Baik/Lengkap',
-            ),
-            ChecksheetKomponenModel(
-              itemPemeriksaan: 'e. Dinding-panel (Tidak bocor, tambahan)',
-              standar: 'Baik/Utuh (Tidak ada tetes/kebocoran)',
+              itemPemeriksaan: 'd. Pelumas pada deep stick',
+              standar: 'Cukup',
             ),
           ],
         ),
         ChecksheetKategoriModel(
-          namaKategori: 'PENGECEKAN ON/OFF',
+          namaKategori: 'MENGHIDUPKAN GENSET',
           items: [
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'a. Genset On',
-              standar: 'On/Normal',
+              itemPemeriksaan: 'a. Tekanan Pelumas',
+              standar: '2,5 - 6 Bar',
             ),
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'b. Genset Off',
-              standar: 'Off/Tidak Berjalan',
+              itemPemeriksaan: 'b. Tekanan air pendingin',
+              standar: '2,5 - 6 Bar',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'c. Tekanan bahan bakar',
+              standar: '1,5 - 3 Bar',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'd. Tegangan baterai',
+              standar: '24 - 28 Volt',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'e. Frekuensi genset tanpa beban',
+              standar: '48 - 51 Hz',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'f. Tegangan genset tanpa beban',
+              standar: '380 - 410 Volt',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'g. Tekanan udara genset',
+              standar: '2,5 - 6 Bar',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'h. Motor kipas radiator',
+              standar: 'Baik',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'i. Motor starter',
+              standar: 'Baik',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'j. Dinamo Pengisian',
+              standar: 'Baik',
             ),
           ],
         ),
         ChecksheetKategoriModel(
-          namaKategori: 'CATATAN PENTING',
+          namaKategori: 'MEMBEBANI GENSET',
           items: [
             ChecksheetKomponenModel(
-              itemPemeriksaan: 'Catatan Penting',
-              standar: 'Pastikan genset dalam kondisi baik',
+              itemPemeriksaan: 'a. Saklar Utama',
+              standar: 'Baik',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'b. Panel Listrik',
+              standar: 'Baik',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'c. Jam Pembebanan',
+              standar: 'Baik',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'd. Frekuensi genset pada saat pembebanan',
+              standar: '48 - 51 Hz',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'e. Ampere',
+              standar: 'Max. 10% antar fasa',
+            ),
+          ],
+        ),
+        ChecksheetKategoriModel(
+          namaKategori: 'MEMATIKAN GENSET',
+          items: [
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'a. Jam mematikan genset',
+              standar: 'Terpantau',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'b. Jam kerja genset setelah dimatikan',
+              standar: 'Terpantau',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'c. Suhu air pendingin',
+              standar: '70 - 90 °C',
+            ),
+            ChecksheetKomponenModel(
+              itemPemeriksaan: 'd. Kondisi tetesan pelumas, Air, HSD',
+              standar: 'Tidak Ada',
             ),
           ],
         ),
@@ -874,8 +904,19 @@ class _ChecksheetKomponenPageState extends State<ChecksheetKomponenPage> {
     );
   }
 
-  // ✅ Widget untuk render kategori
+  // Widget untuk render kategori
   Widget _buildKategoriSection(ChecksheetKategoriModel kategori) {
+    // Deteksi kategori Catatan Penting
+    final isCatatanPenting = kategori.namaKategori.toLowerCase().contains(
+      'catatan penting',
+    );
+
+    // Jika Catatan Penting, render khusus (1x header + 1x TextField)
+    if (isCatatanPenting) {
+      return _buildCatatanPentingSection(kategori);
+    }
+
+    // Untuk kategori lainnya, render normal
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -901,16 +942,1031 @@ class _ChecksheetKomponenPageState extends State<ChecksheetKomponenPage> {
 
         // Items dalam kategori
         ...kategori.items.asMap().entries.map((entry) {
-          return _buildKomponenItem(entry.value, entry.key);
+          return _buildKomponenItem(
+            entry.value,
+            entry.key,
+            kategori.namaKategori,
+          );
         }).toList(),
       ],
     );
   }
 
-  // ✅ Widget untuk item komponen (dengan Standar & Hasil Input)
-  Widget _buildKomponenItem(ChecksheetKomponenModel item, int index) {
+  // ✅ Widget untuk item dengan input angka + satuan
+  Widget _buildInputAngkaSatuanItem(ChecksheetKomponenModel item) {
+    String nilaiInput = item.hasilInput;
+
+    // Deteksi satuan dari standar
+    String satuan = '';
+    String labelInput = 'Inputkan Nilai';
+
+    final standarLower = item.standar.toLowerCase();
+
+    if (standarLower.contains('bar')) {
+      satuan = 'Bar';
+    } else if (standarLower.contains('volt')) {
+      satuan = 'Volt';
+    } else if (standarLower.contains('hz')) {
+      satuan = 'Hz';
+    } else if (standarLower.contains('°c')) {
+      satuan = '°C';
+    } else if (standarLower.contains('kg') || standarLower.contains('cm²')) {
+      satuan = 'Kg/cm²';
+    }
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 8.0),
+      margin: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(
+          color:
+              item.hasilInput.isEmpty
+                  ? Colors.grey.shade300
+                  : const Color(0xFF2196F3),
+          width: 1.0,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            item.itemPemeriksaan,
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 14.0,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 12.0),
+
+          // Standar
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 10.0,
+            ),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE3F2FD),
+              borderRadius: BorderRadius.circular(6.0),
+              border: Border(
+                bottom: BorderSide(color: const Color(0xFF2196F3), width: 2.0),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Standar:',
+                  style: GoogleFonts.inter(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2196F3),
+                  ),
+                ),
+                const Spacer(),
+                Flexible(
+                  child: Text(
+                    item.standar,
+                    style: GoogleFonts.inter(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF2196F3),
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 12.0),
+
+          // Input dengan satuan
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: TextEditingController(text: nilaiInput)
+                    ..selection = TextSelection.fromPosition(
+                      TextPosition(offset: nilaiInput.length),
+                    ),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  decoration: InputDecoration(
+                    labelText: labelInput,
+                    labelStyle: GoogleFonts.inter(
+                      fontSize: 11.0,
+                      color: Colors.grey[600],
+                    ),
+                    hintText: '0.0',
+                    hintStyle: GoogleFonts.inter(
+                      fontSize: 12.0,
+                      color: Colors.grey[400],
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12.0,
+                      vertical: 10.0,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF2196F3),
+                        width: 1.5,
+                      ),
+                    ),
+                  ),
+                  style: GoogleFonts.inter(
+                    fontSize: 13.0,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      item.hasilInput = value;
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(width: 8.0),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 12.0,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(6.0),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Text(
+                  satuan,
+                  style: GoogleFonts.inter(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey[700],
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 12.0),
+
+          // Keterangan
+          TextField(
+            controller: TextEditingController(text: item.keterangan)
+              ..selection = TextSelection.fromPosition(
+                TextPosition(offset: item.keterangan.length),
+              ),
+            decoration: InputDecoration(
+              hintText: 'Keterangan/Tindak Lanjut (Opsional)',
+              hintStyle: GoogleFonts.inter(
+                fontSize: 12.0,
+                color: Colors.grey[400],
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 12.0,
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade50,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: const BorderSide(
+                  color: Color(0xFF2196F3),
+                  width: 1.5,
+                ),
+              ),
+            ),
+            style: GoogleFonts.inter(fontSize: 13.0, color: Colors.black87),
+            maxLines: 3,
+            minLines: 1,
+            onChanged: (value) {
+              setState(() {
+                item.keterangan = value;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ✅ Widget khusus untuk Ampere (3 fase: R, S, T)
+  Widget _buildAmpereTripleFaseItem(ChecksheetKomponenModel item) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(
+          color:
+              (item.multiInput['R']?.isNotEmpty ?? false) ||
+                      (item.multiInput['S']?.isNotEmpty ?? false) ||
+                      (item.multiInput['T']?.isNotEmpty ?? false)
+                  ? const Color(0xFF2196F3)
+                  : Colors.grey.shade300,
+          width: 1.0,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            item.itemPemeriksaan,
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 14.0,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 12.0),
+
+          // Standar
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 10.0,
+            ),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE3F2FD),
+              borderRadius: BorderRadius.circular(6.0),
+              border: Border(
+                bottom: BorderSide(color: const Color(0xFF2196F3), width: 2.0),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Standar:',
+                  style: GoogleFonts.inter(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2196F3),
+                  ),
+                ),
+                const Spacer(),
+                Flexible(
+                  child: Text(
+                    item.standar,
+                    style: GoogleFonts.inter(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF2196F3),
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 16.0),
+
+          // Input Ampere R
+          _buildAmpereInputRow(
+            label: 'Ampere R:',
+            value: item.multiInput['R'] ?? '',
+            onChanged: (value) {
+              setState(() {
+                item.multiInput['R'] = value;
+              });
+            },
+          ),
+
+          const SizedBox(height: 12.0),
+
+          // Input Ampere S
+          _buildAmpereInputRow(
+            label: 'Ampere S:',
+            value: item.multiInput['S'] ?? '',
+            onChanged: (value) {
+              setState(() {
+                item.multiInput['S'] = value;
+              });
+            },
+          ),
+
+          const SizedBox(height: 12.0),
+
+          // Input Ampere T
+          _buildAmpereInputRow(
+            label: 'Ampere T:',
+            value: item.multiInput['T'] ?? '',
+            onChanged: (value) {
+              setState(() {
+                item.multiInput['T'] = value;
+              });
+            },
+          ),
+
+          const SizedBox(height: 12.0),
+
+          // Keterangan
+          TextField(
+            controller: TextEditingController(text: item.keterangan)
+              ..selection = TextSelection.fromPosition(
+                TextPosition(offset: item.keterangan.length),
+              ),
+            decoration: InputDecoration(
+              hintText: 'Keterangan/Tindak Lanjut (Opsional)',
+              hintStyle: GoogleFonts.inter(
+                fontSize: 12.0,
+                color: Colors.grey[400],
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 12.0,
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade50,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: const BorderSide(
+                  color: Color(0xFF2196F3),
+                  width: 1.5,
+                ),
+              ),
+            ),
+            style: GoogleFonts.inter(fontSize: 13.0, color: Colors.black87),
+            maxLines: 3,
+            minLines: 1,
+            onChanged: (value) {
+              setState(() {
+                item.keterangan = value;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Helper untuk input row Ampere
+  Widget _buildAmpereInputRow({
+    required String label,
+    required String value,
+    required Function(String) onChanged,
+  }) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 90.0,
+          child: Text(
+            label,
+            style: GoogleFonts.inter(
+              fontSize: 13.0,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8.0),
+        Expanded(
+          child: TextField(
+            controller: TextEditingController(text: value)
+              ..selection = TextSelection.fromPosition(
+                TextPosition(offset: value.length),
+              ),
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            decoration: InputDecoration(
+              hintText: 'Nilai (A)',
+              hintStyle: GoogleFonts.inter(
+                fontSize: 12.0,
+                color: Colors.grey[400],
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 10.0,
+              ),
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6.0),
+                borderSide: const BorderSide(
+                  color: Color(0xFF2196F3),
+                  width: 1.5,
+                ),
+              ),
+            ),
+            style: GoogleFonts.inter(
+              fontSize: 13.0,
+              color: Colors.black87,
+              fontWeight: FontWeight.w600,
+            ),
+            onChanged: onChanged,
+          ),
+        ),
+        const SizedBox(width: 8.0),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(6.0),
+            border: Border.all(color: Colors.grey.shade300),
+          ),
+          child: Text(
+            '(A)',
+            style: GoogleFonts.inter(
+              fontSize: 12.0,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey[700],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // ✅ Widget untuk input waktu (Pukul: WIB atau JKM)
+  Widget _buildWaktuInputItem(ChecksheetKomponenModel item) {
+    String satuanWaktu = 'Pukul: WIB';
+    String hintText = '00:00';
+    TextInputType keyboardType = TextInputType.datetime;
+
+    final itemLower = item.itemPemeriksaan.toLowerCase();
+
+    if (itemLower.contains('jam kerja') || itemLower.contains('jkm')) {
+      satuanWaktu = 'JKM';
+      hintText = '0';
+      keyboardType = const TextInputType.numberWithOptions(decimal: true);
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(
+          color:
+              item.hasilInput.isEmpty
+                  ? Colors.grey.shade300
+                  : const Color(0xFF2196F3),
+          width: 1.0,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            item.itemPemeriksaan,
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 14.0,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 12.0),
+
+          // Standar
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 10.0,
+            ),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE3F2FD),
+              borderRadius: BorderRadius.circular(6.0),
+              border: Border(
+                bottom: BorderSide(color: const Color(0xFF2196F3), width: 2.0),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Standar:',
+                  style: GoogleFonts.inter(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2196F3),
+                  ),
+                ),
+                const Spacer(),
+                Flexible(
+                  child: Text(
+                    item.standar,
+                    style: GoogleFonts.inter(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF2196F3),
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 12.0),
+
+          // Input Waktu
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: TextEditingController(text: item.hasilInput)
+                    ..selection = TextSelection.fromPosition(
+                      TextPosition(offset: item.hasilInput.length),
+                    ),
+                  keyboardType: keyboardType,
+                  decoration: InputDecoration(
+                    labelText: 'Inputkan Nilai Terpantau',
+                    labelStyle: GoogleFonts.inter(
+                      fontSize: 11.0,
+                      color: Colors.grey[600],
+                    ),
+                    hintText: hintText,
+                    hintStyle: GoogleFonts.inter(
+                      fontSize: 12.0,
+                      color: Colors.grey[400],
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12.0,
+                      vertical: 10.0,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF2196F3),
+                        width: 1.5,
+                      ),
+                    ),
+                  ),
+                  style: GoogleFonts.inter(
+                    fontSize: 13.0,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      item.hasilInput = value;
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(width: 8.0),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12.0,
+                  vertical: 12.0,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(6.0),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Text(
+                  satuanWaktu,
+                  style: GoogleFonts.inter(
+                    fontSize: 11.0,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey[700],
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 12.0),
+
+          // Keterangan
+          TextField(
+            controller: TextEditingController(text: item.keterangan)
+              ..selection = TextSelection.fromPosition(
+                TextPosition(offset: item.keterangan.length),
+              ),
+            decoration: InputDecoration(
+              hintText: 'Keterangan/Tindak Lanjut (Opsional)',
+              hintStyle: GoogleFonts.inter(
+                fontSize: 12.0,
+                color: Colors.grey[400],
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 12.0,
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade50,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: const BorderSide(
+                  color: Color(0xFF2196F3),
+                  width: 1.5,
+                ),
+              ),
+            ),
+            style: GoogleFonts.inter(fontSize: 13.0, color: Colors.black87),
+            maxLines: 3,
+            minLines: 1,
+            onChanged: (value) {
+              setState(() {
+                item.keterangan = value;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildKomponenItem(
+    ChecksheetKomponenModel item,
+    int index,
+    String kategoriName,
+  ) {
+    final standarLower = item.standar.toLowerCase();
+    final itemLower = item.itemPemeriksaan.toLowerCase();
+
+    // 1. Deteksi AMPERE (3 input: R, S, T)
+    if (itemLower.contains('ampere') && standarLower.contains('fasa')) {
+      return _buildAmpereTripleFaseItem(item);
+    }
+
+    // 2. Deteksi JAM/WAKTU (Pukul WIB atau JKM)
+    if (itemLower.contains('jam') && standarLower.contains('terpantau')) {
+      return _buildWaktuInputItem(item);
+    }
+
+    // 3. Deteksi input ANGKA + SATUAN (Bar, Volt, Hz, °C, Kg/cm²)
+    final needsNumericInput =
+        standarLower.contains('kg') ||
+        standarLower.contains('cm²') ||
+        standarLower.contains('bar') ||
+        standarLower.contains('volt') ||
+        standarLower.contains('hz') ||
+        standarLower.contains('°c');
+
+    if (needsNumericInput) {
+      return _buildInputAngkaSatuanItem(item);
+    }
+    // 4. Deteksi BUTTON CHOICE (2 tombol)
+    final usesButtonChoice =
+        standarLower.contains('baik') ||
+        standarLower.contains('lengkap') ||
+        standarLower.contains('seimbang') ||
+        standarLower.contains('berfungsi') ||
+        standarLower.contains('tidak ada') ||
+        standarLower.contains('cukup') ||
+        standarLower.contains('bocor');
+
+    if (usesButtonChoice) {
+      return _buildButtonChoiceItem(item);
+    }
+
+    // 5. Default: Text Field standard
+    return _buildStandardKomponenItem(item);
+  }
+
+  //Widget untuk item dengan pilihan button Baik/Rusak
+  Widget _buildButtonChoiceItem(ChecksheetKomponenModel item) {
+    // Parse hasil input: "BAIK" atau "RUSAK"
+    final selectedChoice = item.hasilInput.toUpperCase();
+    // ✅ Deteksi label button dari standar
+    String leftButton = 'Baik';
+    String rightButton = 'Rusak';
+
+    final standarLower = item.standar.toLowerCase();
+
+    if (standarLower.contains('tidak ada') && standarLower.contains('ada')) {
+      leftButton = 'Tidak Ada';
+      rightButton = 'Ada';
+    } else if (standarLower.contains('cukup') &&
+        standarLower.contains('kurang')) {
+      leftButton = 'Cukup';
+      rightButton = 'Kurang';
+    } else if (standarLower.contains('seimbang') &&
+        standarLower.contains('tidak')) {
+      leftButton = 'Seimbang';
+      rightButton = 'Tidak';
+    } else if (standarLower.contains('lengkap') &&
+        !standarLower.contains('baik')) {
+      leftButton = 'Lengkap';
+      rightButton = 'Tidak';
+    } else if (standarLower.contains('lengkap') &&
+        standarLower.contains('baik')) {
+      leftButton = 'Lengkap dan Baik';
+      rightButton = 'Tidak';
+    } else if (standarLower.contains('berfungsi') &&
+        standarLower.contains('tidak')) {
+      leftButton = 'Berfungsi';
+      rightButton = 'Tidak';
+    } else if (standarLower.contains('berfungsi')) {
+      leftButton = 'Berfungsi';
+      rightButton = 'Rusak';
+    } else if (standarLower.contains('bocor') &&
+        standarLower.contains('tidak')) {
+      leftButton = 'Tidak';
+      rightButton = 'Bocor';
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(
+          color:
+              item.hasilInput.isEmpty
+                  ? Colors.grey.shade300
+                  : const Color(0xFF2196F3),
+          width: 1.0,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Nama item
+          Text(
+            item.itemPemeriksaan,
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 14.0,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 12.0),
+
+          // Standar
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 10.0,
+            ),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE3F2FD),
+              borderRadius: BorderRadius.circular(6.0),
+              border: Border(
+                bottom: BorderSide(color: const Color(0xFF2196F3), width: 2.0),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Standar:',
+                  style: GoogleFonts.inter(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2196F3),
+                  ),
+                ),
+                const Spacer(),
+                Flexible(
+                  child: Text(
+                    item.standar,
+                    style: GoogleFonts.inter(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF2196F3),
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 12.0),
+
+          // Tombol Pilihan
+          Row(
+            children: [
+              Expanded(
+                child: _buildKondisiButton(
+                  label: leftButton,
+                  isSelected:
+                      selectedChoice ==
+                      leftButton.toUpperCase().replaceAll(' ', '_'),
+                  onTap: () {
+                    setState(() {
+                      item.hasilInput = leftButton.toUpperCase().replaceAll(
+                        ' ',
+                        '_',
+                      );
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(width: 12.0),
+              Expanded(
+                child: _buildKondisiButton(
+                  label: rightButton,
+                  isSelected:
+                      selectedChoice ==
+                      rightButton.toUpperCase().replaceAll(' ', '_'),
+                  onTap: () {
+                    setState(() {
+                      item.hasilInput = rightButton.toUpperCase().replaceAll(
+                        ' ',
+                        '_',
+                      );
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 12.0),
+
+          // Keterangan
+          TextField(
+            controller: TextEditingController(text: item.keterangan)
+              ..selection = TextSelection.fromPosition(
+                TextPosition(offset: item.keterangan.length),
+              ),
+            decoration: InputDecoration(
+              hintText: 'Keterangan/Tindak Lanjut (Opsional)',
+              hintStyle: GoogleFonts.inter(
+                fontSize: 12.0,
+                color: Colors.grey[400],
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 12.0,
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade50,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: const BorderSide(
+                  color: Color(0xFF2196F3),
+                  width: 1.5,
+                ),
+              ),
+            ),
+            style: GoogleFonts.inter(fontSize: 13.0, color: Colors.black87),
+            maxLines: 3,
+            minLines: 1,
+            onChanged: (value) {
+              setState(() {
+                item.keterangan = value;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ✅ Widget khusus untuk section Catatan Penting (1 header + 1 TextField)
+  Widget _buildCatatanPentingSection(ChecksheetKategoriModel kategori) {
+    // Ambil item pertama sebagai representasi catatan penting
+    final item =
+        kategori.items.isNotEmpty
+            ? kategori.items[0]
+            : ChecksheetKomponenModel(
+              itemPemeriksaan: 'Catatan Penting',
+              standar: 'Catatan',
+            );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Header "Catatan Penting" di luar container
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0, bottom: 12.0),
+          child: Text(
+            'Catatan Penting',
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 16.0,
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF2196F3),
+              height: 1.4,
+            ),
+          ),
+        ),
+
+        // TextField untuk catatan penting (hanya 1)
+        Container(
+          margin: const EdgeInsets.only(bottom: 16.0),
+          child: TextField(
+            controller: TextEditingController(text: item.hasilInput)
+              ..selection = TextSelection.fromPosition(
+                TextPosition(offset: item.hasilInput.length),
+              ),
+            decoration: InputDecoration(
+              hintText: 'Catatan Penting',
+              hintStyle: GoogleFonts.inter(
+                fontSize: 13.0,
+                color: Colors.grey[400],
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 14.0,
+              ),
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: const BorderSide(
+                  color: Color(0xFF2196F3),
+                  width: 1.5,
+                ),
+              ),
+            ),
+            style: GoogleFonts.inter(fontSize: 13.0, color: Colors.black87),
+            maxLines: 6,
+            minLines: 4,
+            onChanged: (value) {
+              setState(() {
+                item.hasilInput = value;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  //Widget untuk item standard
+  Widget _buildStandardKomponenItem(ChecksheetKomponenModel item) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12.0),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -939,110 +1995,100 @@ class _ChecksheetKomponenPageState extends State<ChecksheetKomponenPage> {
           const SizedBox(height: 12.0),
 
           // Row: Standar & Hasil Input
-          Row(
-            children: [
-              // Standar (Read-only)
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Standar',
-                      style: GoogleFonts.inter(
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    const SizedBox(height: 4.0),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 10.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade50,
-                        borderRadius: BorderRadius.circular(6.0),
-                        border: Border.all(color: Colors.grey.shade300),
-                      ),
-                      child: Text(
-                        item.standar,
-                        style: GoogleFonts.inter(
-                          fontSize: 12.0,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ),
-                  ],
+          // ✅ Standar (full width dengan format: "Standar: Baik")
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 10.0,
+            ),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE3F2FD), // Light blue background
+              borderRadius: BorderRadius.circular(6.0),
+              border: Border(
+                bottom: BorderSide(
+                  color: const Color(0xFF2196F3), // Blue underline
+                  width: 2.0,
                 ),
               ),
-              const SizedBox(width: 12.0),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  'Standar:',
+                  style: GoogleFonts.inter(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2196F3),
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  item.standar,
+                  style: GoogleFonts.inter(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFF2196F3),
+                  ),
+                ),
+              ],
+            ),
+          ),
 
-              // Hasil Input (Editable)
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Hasil',
-                      style: GoogleFonts.inter(
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    const SizedBox(height: 4.0),
-                    TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Isi hasil...',
-                        hintStyle: GoogleFonts.inter(
-                          fontSize: 12.0,
-                          color: Colors.grey[400],
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                          vertical: 10.0,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(6.0),
-                          borderSide: BorderSide(color: Colors.grey.shade300),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(6.0),
-                          borderSide: BorderSide(color: Colors.grey.shade300),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(6.0),
-                          borderSide: const BorderSide(
-                            color: Color(0xFF2196F3),
-                            width: 1.5,
-                          ),
-                        ),
-                      ),
-                      style: GoogleFonts.inter(
-                        fontSize: 12.0,
-                        color: Colors.black87,
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          item.hasilInput = value;
-                        });
-                      },
-                    ),
-                  ],
+          const SizedBox(height: 12.0),
+
+          // ✅ Hasil Input (Editable) - Full Width
+          TextField(
+            controller: TextEditingController(text: item.hasilInput)
+              ..selection = TextSelection.fromPosition(
+                TextPosition(offset: item.hasilInput.length),
+              ),
+            decoration: InputDecoration(
+              hintText: 'Isi hasil...',
+              hintStyle: GoogleFonts.inter(
+                fontSize: 12.0,
+                color: Colors.grey[400],
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 10.0,
+              ),
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6.0),
+                borderSide: const BorderSide(
+                  color: Color(0xFF2196F3),
+                  width: 1.5,
                 ),
               ),
-            ],
+            ),
+            style: GoogleFonts.inter(fontSize: 12.0, color: Colors.black87),
+            onChanged: (value) {
+              setState(() {
+                item.hasilInput = value;
+              });
+            },
           ),
 
           const SizedBox(height: 12.0),
 
           // Keterangan
           TextField(
+            controller: TextEditingController(text: item.keterangan)
+              ..selection = TextSelection.fromPosition(
+                TextPosition(offset: item.keterangan.length),
+              ),
             decoration: InputDecoration(
-              hintText: 'Keterangan/Tindak Lanjut(Opsional)',
+              hintText: 'Keterangan/Tindak Lanjut (Opsional)',
               hintStyle: GoogleFonts.inter(
                 fontSize: 12.0,
                 color: Colors.grey[400],
@@ -1073,11 +2119,359 @@ class _ChecksheetKomponenPageState extends State<ChecksheetKomponenPage> {
             maxLines: 2,
             minLines: 1,
             onChanged: (value) {
-              item.keterangan = value;
+              setState(() {
+                item.keterangan = value;
+              });
             },
           ),
         ],
       ),
+    );
+  }
+
+  // Widget khusus untuk Tekanan Udara Pengereman
+  Widget _buildTekananUdaraItem(ChecksheetKomponenModel item) {
+    // Parse nilai dari hasilInput (format: "5|BAIK" atau "4.8|RUSAK")
+    final parts = item.hasilInput.split('|');
+    String nilaiTekanan =
+        parts.isNotEmpty && parts[0].isNotEmpty ? parts[0] : '';
+    String statusKondisi = parts.length > 1 ? parts[1] : '';
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(
+          color:
+              item.hasilInput.isEmpty
+                  ? Colors.grey.shade300
+                  : const Color(0xFF2196F3),
+          width: 1.0,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // ✅ Nama item
+          Text(
+            item.itemPemeriksaan,
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 14.0,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 12.0),
+
+          // ✅ Standar (full width dengan format: "Standar:  Baik")
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 10.0,
+            ),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE3F2FD), // Light blue background
+              borderRadius: BorderRadius.circular(6.0),
+              border: Border(
+                bottom: BorderSide(
+                  color: const Color(0xFF2196F3), // Blue underline
+                  width: 2.0,
+                ),
+              ),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  'Standar:',
+                  style: GoogleFonts.inter(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2196F3),
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  item.standar,
+                  style: GoogleFonts.inter(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFF2196F3),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 12.0),
+
+          // Input Nilai dengan satuan Kg/cm²
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: TextEditingController(text: nilaiTekanan)
+                    ..selection = TextSelection.fromPosition(
+                      TextPosition(offset: nilaiTekanan.length),
+                    ),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  decoration: InputDecoration(
+                    labelText: 'Inputkan Nilai',
+                    labelStyle: GoogleFonts.inter(
+                      fontSize: 11.0,
+                      color: Colors.grey[600],
+                    ),
+                    hintText: '0.0',
+                    hintStyle: GoogleFonts.inter(
+                      fontSize: 12.0,
+                      color: Colors.grey[400],
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12.0,
+                      vertical: 10.0,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF2196F3),
+                        width: 1.5,
+                      ),
+                    ),
+                  ),
+                  style: GoogleFonts.inter(
+                    fontSize: 13.0,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      nilaiTekanan = value;
+                      item.hasilInput = '$value|$statusKondisi';
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(width: 8.0),
+              // Label satuan
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 12.0,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(6.0),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Text(
+                  'Kg/cm²',
+                  style: GoogleFonts.inter(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey[700],
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 12.0),
+
+          // Tombol Baik / Rusak
+          Row(
+            children: [
+              Expanded(
+                child: _buildKondisiButton(
+                  label: 'Baik',
+                  isSelected: statusKondisi == 'BAIK',
+                  onTap: () {
+                    setState(() {
+                      statusKondisi = 'BAIK';
+                      item.hasilInput = '$nilaiTekanan|BAIK';
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(width: 12.0),
+              Expanded(
+                child: _buildKondisiButton(
+                  label: 'Rusak',
+                  isSelected: statusKondisi == 'RUSAK',
+                  onTap: () {
+                    setState(() {
+                      statusKondisi = 'RUSAK';
+                      item.hasilInput = '$nilaiTekanan|RUSAK';
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 12.0),
+
+          // Keterangan
+          TextField(
+            controller: TextEditingController(text: item.keterangan)
+              ..selection = TextSelection.fromPosition(
+                TextPosition(offset: item.keterangan.length),
+              ),
+            decoration: InputDecoration(
+              hintText: 'Keterangan/Tindak Lanjut (Opsional)',
+              hintStyle: GoogleFonts.inter(
+                fontSize: 12.0,
+                color: Colors.grey[400],
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 12.0,
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade50,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: const BorderSide(
+                  color: Color(0xFF2196F3),
+                  width: 1.5,
+                ),
+              ),
+            ),
+            style: GoogleFonts.inter(fontSize: 13.0, color: Colors.black87),
+            maxLines: 2,
+            minLines: 1,
+            onChanged: (value) {
+              setState(() {
+                item.keterangan = value;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Helper untuk tombol Baik/Rusak
+  Widget _buildKondisiButton({
+    required String label,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(6.0),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF2196F3) : Colors.white,
+          borderRadius: BorderRadius.circular(6.0),
+          border: Border.all(
+            color: isSelected ? const Color(0xFF2196F3) : Colors.grey.shade300,
+            width: isSelected ? 1.5 : 1.0,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: GoogleFonts.inter(
+              fontSize: 13.0,
+              fontWeight: FontWeight.w600,
+              color: isSelected ? Colors.white : Colors.grey[700],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  //Widget untuk Catatan Penting
+  Widget _buildCatatanPentingItem(ChecksheetKomponenModel item) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Header "Catatan Penting" di luar container
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0, bottom: 8.0, left: 0.0),
+          child: Text(
+            'Catatan Penting',
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 16.0,
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF2196F3),
+              height: 1.4,
+            ),
+          ),
+        ),
+
+        // TextField untuk catatan penting
+        Container(
+          margin: const EdgeInsets.only(bottom: 12.0),
+          child: TextField(
+            controller: TextEditingController(text: item.hasilInput)
+              ..selection = TextSelection.fromPosition(
+                TextPosition(offset: item.hasilInput.length),
+              ),
+            decoration: InputDecoration(
+              hintText: 'Catatan Penting',
+              hintStyle: GoogleFonts.inter(
+                fontSize: 13.0,
+                color: Colors.grey[400],
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 14.0,
+              ),
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: const BorderSide(
+                  color: Color(0xFF2196F3),
+                  width: 1.5,
+                ),
+              ),
+            ),
+            style: GoogleFonts.inter(fontSize: 13.0, color: Colors.black87),
+            maxLines: 6,
+            minLines: 4,
+            onChanged: (value) {
+              setState(() {
+                item.hasilInput = value;
+              });
+            },
+          ),
+        ),
+      ],
     );
   }
 
